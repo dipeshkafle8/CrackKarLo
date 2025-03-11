@@ -1,6 +1,12 @@
 const express = require("express");
+const { connectDB } = require("./config/db");
+require("dotenv").config();
+//connect to the mongodb
+connectDB();
+
 const app = express();
 
-app.listen(8003, () => {
-  console.log("Server is running sucessfully at 8003");
+let port = process.env.PORT || 8000;
+app.listen(port, () => {
+  console.log(`Server is running sucessfully at ${port}`);
 });
