@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema(
         completedQuestions: [
           { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
         ],
-        totalQuestions: { type: Number },
       },
     ],
     //to store the details about the constest given by the student
@@ -30,6 +29,12 @@ const userSchema = new mongoose.Schema(
         course_Id: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
         progess: Number,
         default: 0,
+      },
+    ],
+    interviewExperiences: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "InterviewExp",
       },
     ],
   },
