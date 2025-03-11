@@ -27,8 +27,7 @@ const userSchema = new mongoose.Schema(
     courseProgress: [
       {
         course_Id: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
-        progess: Number,
-        default: 0,
+        progress: Number,
       },
     ],
     interviewExperiences: [
@@ -41,6 +40,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true } //by default add createdAt and updatedAt fields in the schema
 );
 
-const User = mongoose.Model("users", userSchema);
+const User = mongoose.model("users", userSchema);
 
 module.exports = { User };
