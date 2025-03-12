@@ -13,6 +13,7 @@
   "dependencies": {
     "@gluestack-ui/button": "^1.0.13",
     "@tailwindcss/vite": "^4.0.10",
+    "axios": "^1.8.2",
     "framer-motion": "^12.4.10",
     "lucide-react": "^0.479.0",
     "react": "^19.0.0",

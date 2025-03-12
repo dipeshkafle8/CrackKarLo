@@ -1,18 +1,18 @@
 import "./App.css";
-import Home from "../layout/Home";
+import Navbar from "./pages/Navbar/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login/Login";
 
 function App() {
   return (
-    <BrowserRouter>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-      <h1 className="text-2xl font-bold underline text-center mt-12">
-        Test for Tailwindcss
-      </h1>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
