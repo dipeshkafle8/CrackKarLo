@@ -4,7 +4,10 @@ const questionSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: Text,
+      required: true,
+    },
+    isDSA: {
+      type: Boolean,
     },
     link: {
       type: String,

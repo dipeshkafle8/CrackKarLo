@@ -66,8 +66,36 @@ const handleCreateCourse = async (req, res) => {
   }
 };
 
+// For creating a module for particular Course
+const handleCreateModule = async (req, res) => {
+  try {
+    const { course } = req.body;
+    const moduleDetails = req.body;
+
+    const newModule = new Module(moduleDetails);
+
+    //to update Course model include moduleId into the course and inc total modueles by 1
+    await Course.findByIdAndUpdate(course, {
+      $push: { modules: newModule._id },
+      $inc: { totalModules: 1 },
+    });
+
+    newModule.save();
+    res.status(200).json({
+      status: true,
+      msg: "Successfully created module",
+      id: newModule._id,
+    });
+  } catch (err) {
+    console.log("Error in creating Module", err);
+    res.status(500).json({ status: false, msg: "Error in Creating Module" });
+  }
+};
+
 module.exports = {
   getAllCourses,
   getAllModules,
   getAllQuestions,
+  handleCreateCourse,
+  handleCreateModule,
 };
