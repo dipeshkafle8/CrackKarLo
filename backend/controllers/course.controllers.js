@@ -92,10 +92,48 @@ const handleCreateModule = async (req, res) => {
   }
 };
 
+const handleCreateQuestion = async (req, res) => {
+  try {
+    const { module } = req.body;
+    const question = req.body;
+    //creating instance of question
+    const newQuestion = new Question(question);
+
+    //updating module no of questions and questions array
+    const updatedModule = await Module.findByIdAndUpdate(
+      module,
+      {
+        $push: { questions: newQuestion._id },
+        $inc: { totalQuestions: 1 },
+      },
+      {
+        new: true,
+      }
+    );
+    // update the total question in course for that particular module
+    await Course.findByIdAndUpdate(updatedModule.course, {
+      $inc: { totalQuestions: 1 },
+    });
+
+    //save the instance to the database
+    newQuestion.save();
+
+    res.status(200).json({
+      status: true,
+      msg: "Question created Successfully",
+      id: newQuestion._id,
+    });
+  } catch (err) {
+    console.log("Error in creating questions", err);
+    res.status(500).json({ status: false, msg: "Error in creating questions" });
+  }
+};
+
 module.exports = {
   getAllCourses,
   getAllModules,
   getAllQuestions,
   handleCreateCourse,
   handleCreateModule,
+  handleCreateQuestion,
 };
