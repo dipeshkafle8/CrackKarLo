@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <div className="pt-3">
       <nav
-        className="bg-[#283825] p-1 hover:p-3 border-2 rounded-full w-1/4 hover:w-2/3 mx-auto shadow-lg hover:shadow-gray-950 duration-100 absolute top-2 left-0 right-0 z-50"
+        className="bg-[#640606] p-1 hover:p-3 rounded-full w-1/4 hover:w-2/3 mx-auto shadow-lg hover:shadow-gray-950 duration-100 absolute top-2 left-0 right-0 z-50"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

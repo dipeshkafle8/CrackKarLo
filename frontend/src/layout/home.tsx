@@ -1,4 +1,3 @@
-import React from 'react';
 import Navbar from '../pages/navbar';
 import Content from '../pages/content';
 const Home=()=>{
@@ -6,8 +5,6 @@ const Home=()=>{
         <div>
              <Content/>
             <Navbar/>
-           
-
         </div>
     )
 }
