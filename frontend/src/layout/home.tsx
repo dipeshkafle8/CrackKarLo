@@ -1,0 +1,11 @@
+import Navbar from '../pages/navbar';
+import Content from '../pages/content';
+const Home=()=>{
+    return(
+        <div>
+             <Content/>
+            <Navbar/>
+        </div>
+    )
+}
+export default Home;
