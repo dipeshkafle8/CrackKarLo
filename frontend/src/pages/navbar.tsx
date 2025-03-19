@@ -52,6 +52,12 @@ const Navbar = () => {
                 >
                   Careers
                 </Link>
+                <Link
+                  to="/login"
+                  className="text-gray-300 hover:text-white transition duration-300 hover:underline"
+                >
+                  Login
+                </Link>
               </>
             )}
           </div>

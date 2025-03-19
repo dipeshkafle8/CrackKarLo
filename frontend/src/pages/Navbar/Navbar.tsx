@@ -14,43 +14,43 @@ const Navbar = () => {
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-white text-lg font-bold ml-4">Logo</div>
           <div className="space-x-9 mr-2">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="text-gray-300 hover:text-white transition duration-300 hover:underline"
             >
               Home
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/about"
               className="text-gray-300 hover:text-white transition duration-300 hover:underline"
             >
               About
-            </a>
+            </Link>
             {isHovered && (
               <>
                 <Link
-                  to="/"
+                  to="/modules"
                   className="text-gray-300 hover:text-white transition duration-300 hover:underline"
                 >
                   Modules
                 </Link>
                 <Link
-                  to="/"
+                  to="/services"
                   className="text-gray-300 hover:text-white transition duration-300 hover:underline"
                 >
                   Services
                 </Link>
                 <Link
-                  to="/"
+                  to="/blog"
                   className="text-gray-300 hover:text-white transition duration-300 hover:underline"
                 >
                   Blog
                 </Link>
                 <Link
-                  to="/"
+                  to="/login"
                   className="text-gray-300 hover:text-white transition duration-300 hover:underline"
                 >
-                  Careers
+                  Login
                 </Link>
               </>
             )}
