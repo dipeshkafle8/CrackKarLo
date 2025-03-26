@@ -16,13 +16,6 @@ const userSchema = new mongoose.Schema(
         ],
       },
     ],
-    //to store the details about the constest given by the student
-    contestParticipations: [
-      {
-        contestId: { type: mongoose.Schema.Types.ObjectId, ref: "Contest" },
-        rank: Number,
-      },
-    ],
     //to track how many questions are completed within a course
     courseProgress: [
       {
@@ -33,13 +26,13 @@ const userSchema = new mongoose.Schema(
     interviewExperiences: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "InterviewExp",
+        ref: "Interview",
       },
     ],
   },
   { timestamps: true } //by default add createdAt and updatedAt fields in the schema
 );
 
-const User = mongoose.model("users", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = { User };

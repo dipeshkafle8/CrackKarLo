@@ -19,6 +19,10 @@ const courseSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    type: {
+      type: String,
+      required: true,
+    },
     modules: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -29,6 +33,6 @@ const courseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Course = mongoose.model("courses", courseSchema);
+const Course = mongoose.model("Course", courseSchema);
 
 module.exports = { Course };
