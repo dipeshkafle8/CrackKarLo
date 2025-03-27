@@ -15,7 +15,10 @@ const protectedRoute = async (req, res, next) => {
         .json({ status: false, msg: "Token is not provided" });
     }
     const user = jwt.verify(token, process.env.JWT_SECRET);
-    req.email = user.email;
+    req.user = {
+      id: user.id,
+      emai: user.email,
+    };
     next();
   } catch (err) {
     console.log(err);
