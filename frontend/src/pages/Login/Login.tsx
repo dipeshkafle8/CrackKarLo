@@ -1,78 +1,107 @@
-import { useState } from "react";
-import axios from "axios";
+import type React from "react"
 
-interface UserDetails {
-  email: String;
-  password: String;
-}
-const Login = () => {
-  const sendDataToBackEnd = async (user: UserDetails) => {
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { Eye, EyeOff } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    // Simulate authentication - replace with your actual auth logic
     try {
-      let res = await axios.post("http://localhost:8000/user/login", user);
-      console.log(res);
-    } catch (err) {
-      console.log("Error in loggind in", err);
+      // Example: await signIn(email, password)
+      console.log("Logging in with:", email, password)
+
+      // Simulate successful login
+      setTimeout(() => {
+        navigate("/")
+      }, 1500)
+    } catch (error) {
+      console.error("Login failed:", error)
+    } finally {
+      setIsLoading(false)
     }
-  };
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let formData = new FormData(e.currentTarget);
+  }
 
-    let obj: UserDetails = {
-      email: (formData.get("email") as string) ?? "",
-      password: (formData.get("password") as string) ?? "",
-    };
-    sendDataToBackEnd(obj);
-    e.currentTarget.reset();
-  };
   return (
-    <>
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
-          <h2 className="text-2xl font-bold text-center">Login</h2>
-          <form onSubmit={handleOnSubmit} className="space-y-4">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email:
-              </label>
-              <input
-                type="email"
-                name="email"
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">Login</CardTitle>
+          <CardDescription>Enter your email and password to access your account</CardDescription>
+        </CardHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
                 id="email"
-                placeholder="Enter your email"
-                className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password:
-              </label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-                className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
-                required
-              />
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                </Button>
+              </div>
             </div>
-            <button
-              type="submit"
-              className="w-full px-4 py-2 font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
-            >
-              Login
-            </button>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Login;
+          </CardContent>
+          <CardFooter className="flex flex-col space-y-4">
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
+            </Button>
+            <div className="text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link to="/signup" className="text-primary hover:underline">
+                Sign up
+              </Link>
+            </div>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
+  )
+}

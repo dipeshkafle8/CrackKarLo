@@ -1,5 +1,5 @@
-import Navbar from '../pages/navbar';
-import Content from '../pages/content';
+import Navbar from '../pages/BaseLayout/navbar';
+import Content from '../pages/Context/content';
 const Home=()=>{
     return(
         <div>
