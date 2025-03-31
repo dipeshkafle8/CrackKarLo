@@ -9,15 +9,20 @@ const {
   handleCreateModule,
   handleCreateQuestion,
 } = require("../controllers/course.controllers");
-const course = express.Router();
+const courseRouter = express.Router();
 
 //----------FOR GETTING DATAS----------------------------
-course.get("/getCourses", getAllCourses);
-course.get("/getModules/:courseId", getAllModules);
-course.get("/getQuestions/:moduleId", getAllQuestions);
+courseRouter.get("/getCourses", getAllCourses);
+courseRouter.get("/getModules/:courseId", getAllModules);
+courseRouter.get("/getQuestions/:moduleId", getAllQuestions);
 
 //-----------------FOR CREATING DATA -----------------------
-course.post("/addCourse", protectedRoute, isAdmin, handleCreateCourse);
-course.post("/addModule", protectedRoute, isAdmin, handleCreateModule);
-course.post("/addQuestion", protectedRoute, isAdmin, handleCreateQuestion);
-module.exports = { course };
+courseRouter.post("/addCourse", protectedRoute, isAdmin, handleCreateCourse);
+courseRouter.post("/addModule", protectedRoute, isAdmin, handleCreateModule);
+courseRouter.post(
+  "/addQuestion",
+  protectedRoute,
+  isAdmin,
+  handleCreateQuestion
+);
+module.exports = { courseRouter };

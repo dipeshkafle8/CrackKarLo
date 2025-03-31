@@ -37,6 +37,6 @@ const interviewSchema = new mongoose.Schema(
   }
 );
 
-const InterviewExp = new mongoose.model("interviews", interviewSchema);
+const InterviewExp = new mongoose.model("Interview", interviewSchema);
 
 module.exports = { InterviewExp };

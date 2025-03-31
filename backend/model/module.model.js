@@ -28,6 +28,6 @@ const moduleSchema = new mongoose.Schema(
   }
 );
 
-const Module = mongoose.model("modules", moduleSchema);
+const Module = mongoose.model("Module", moduleSchema);
 
 module.exports = { Module };
