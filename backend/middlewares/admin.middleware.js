@@ -2,8 +2,8 @@ const { User } = require("../model/user.model");
 
 const isAdmin = async (req, res, next) => {
   try {
-    const email = req.email;
-    const user = await User.findOne({ email: email });
+    const userId = req.user.id;
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ status: false, msg: "User doesn't exist" });
     }

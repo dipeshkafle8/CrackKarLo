@@ -20,13 +20,12 @@ const handleUserRegister = async (req, res) => {
       .json({ status: true, msg: "User Created Successfully", user: newUser });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ status: false, msg: "Server error" });
+    res.status(500).json({ status: false, msg: "Error in Creating user" });
   }
 };
 
 //Login functionaltiy
 const handleUserLogin = async (req, res) => {
-  console.log(req.body);
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
@@ -38,7 +37,7 @@ const handleUserLogin = async (req, res) => {
       res.status(401).json({ status: false, msg: "Password is incorrect" });
     }
     const jwtToken = jwt.sign(
-      { name: user.name, email: user.email },
+      { id: user._id, name: user.name, email: user.email },
       process.env.JWT_SECRET,
       {
         expiresIn: "4h",

@@ -8,6 +8,22 @@ const questionSchema = new mongoose.Schema(
     },
     isDSA: {
       type: Boolean,
+      default: false,
+    },
+    description: {
+      type: String,
+    },
+    sampleInput: {
+      type: String,
+    },
+    sampleOuput: {
+      type: String,
+    },
+    constraints: {
+      type: String,
+    },
+    explaination: {
+      type: String,
     },
     link: {
       type: String,
@@ -22,6 +38,6 @@ const questionSchema = new mongoose.Schema(
   }
 );
 
-const Question = mongoose.model("questions", questionSchema);
+const Question = mongoose.model("Question", questionSchema);
 
 module.exports = { Question };
