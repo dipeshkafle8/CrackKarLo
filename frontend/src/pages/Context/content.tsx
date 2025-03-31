@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import bg_veido from '../videos/206779_tiny.mp4';
+import bg_veido from './videos/206779_tiny.mp4';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -14,7 +14,8 @@ import {
     MessageSquare,
     ArrowRight,
 } from "lucide-react"
-import Footer from './footer';
+import Footer from '../BaseLayout/footer';
+import {Link} from 'react-router-dom';
 
 
 
@@ -89,7 +90,7 @@ const Content = () => {
                 <button onClick={handlePrevClick} className="text-white bg-[#a70b0b] p-4 rounded-full mr-4 font-bold">←</button>
                 <div className='relative w-4/5 overflow-hidden'>
                     <div
-                        className={`flex transition-transform duration-300 ease-in-out ${isAnimating ? '' : 'duration-0'} gap-4`}
+                        className={`flex transition-transform duration-300 ease-in-out ${isAnimating ? '' : 'duration-0'} gap-3`}
                         style={{
                             transform: `translate3d(-${currentIndex * 350}px, 0, 0)`, // Adjusted for gap
                             width: `${clonedBoxes.length * 350}px`, // Adjusted for gap
@@ -147,9 +148,11 @@ const Content = () => {
                   </ul>
                 </CardContent>
                 <CardFooter>
+                    <Link to="/course" className='w-full'>
                   <Button variant="outline" className="w-full">
-                    Explore Courses
+                  Explore Courses
                   </Button>
+                  </Link>
                 </CardFooter>
               </Card>
 
@@ -176,9 +179,11 @@ const Content = () => {
                   </ul>
                 </CardContent>
                 <CardFooter>
+                  <Link to="/interview" className='w-full'>
                   <Button variant="outline" className="w-full">
                     Practice Now
                   </Button>
+                  </Link>
                 </CardFooter>
               </Card>
 

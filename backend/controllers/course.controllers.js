@@ -17,6 +17,7 @@ const getAllCourses = async (req, res) => {
   }
 };
 
+
 //for getting modules on particular courses
 const getAllModules = async (req, res) => {
   try {
