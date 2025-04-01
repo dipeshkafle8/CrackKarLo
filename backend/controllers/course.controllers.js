@@ -52,12 +52,13 @@ const getAllQuestions = async (req, res) => {
 //for creating new Course only allowed to admin
 const handleCreateCourse = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, type } = req.body;
     const newCourse = new Course({
       title,
       description,
+      type,
     });
-    newCourse.save();
+    await newCourse.save();
     res
       .status(200)
       .json({ status: true, msg: "Course created", id: newCourse._id });
