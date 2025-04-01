@@ -22,7 +22,7 @@ const CourseModule = () => {
 
     const getCourse = async () => {
         try {
-            const resp = await axios.get(`/api/course/getCourseById/${courseId}`);
+            const resp = await axios.get(`/api/course/getModules/${courseId}`);
             setCourse(resp.data.course);
             console.log("Course data:", resp.data.course);
         } catch (error) {
