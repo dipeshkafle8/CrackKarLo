@@ -60,7 +60,22 @@ const handleUserLogin = async (req, res) => {
   }
 };
 
+//to check user session
+const handleCheckUserSession = async (req, res) => {
+  res
+    .status(200)
+    .json({ status: true, msg: "User is authenticated", user: req.user });
+};
+
+//to handle the user if the user is admin or not
+const hanldeIsAdmin = async (req, res) => {
+  res
+    .status(200)
+    .json({ status: true, msg: "Yes!!,the user is Admin", user: req.user });
+};
 module.exports = {
   handleUserLogin,
   handleUserRegister,
+  handleCheckUserSession,
+  hanldeIsAdmin,
 };
