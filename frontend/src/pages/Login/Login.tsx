@@ -1,48 +1,73 @@
-import type React from "react"
+import type React from "react";
+import { axiosInstance } from "@/lib/axios";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-import { Eye, EyeOff } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AuthContext, AuthContextType, useAuth } from "@/context/AuthContext";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+interface UserLoginDetails {
+  email: String;
+  password: String;
+}
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const { setUser }: AuthContextType = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+  const navigate = useNavigate();
 
-    // Simulate authentication - replace with your actual auth logic
+  const sendUserDetailsToBackend = async (user: UserLoginDetails) => {
     try {
-      // Example: await signIn(email, password)
-      console.log("Logging in with:", email, password)
+      let res = await axiosInstance.post("user/login", user);
+      let token = JSON.stringify(res.data.jwtToken);
 
-      // Simulate successful login
+      localStorage.setItem("token", token);
+      setUser(res.data.user);
+
       setTimeout(() => {
-        navigate("/")
-      }, 1500)
-    } catch (error) {
-      console.error("Login failed:", error)
+        navigate("/");
+      }, 800);
+    } catch (err) {
+      console.log("Error in logging in");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    let formData = new FormData(e.currentTarget);
+    const user: UserLoginDetails = {
+      email: (formData.get("email") as String) ?? "",
+      password: (formData.get("password") as String) ?? "",
+    };
+    sendUserDetailsToBackend(user);
+    e.currentTarget.reset();
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
-          <CardDescription>Enter your email and password to access your account</CardDescription>
+          <CardDescription>
+            Enter your email and password to access your account
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <CardContent className="space-y-4">
@@ -52,15 +77,17 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
               />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-primary hover:underline"
+                >
                   Forgot password?
                 </Link>
               </div>
@@ -68,8 +95,7 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
                   required
                 />
                 <Button
@@ -84,7 +110,9 @@ export default function LoginPage() {
                   ) : (
                     <Eye className="h-4 w-4 text-muted-foreground" />
                   )}
-                  <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                  <span className="sr-only">
+                    {showPassword ? "Hide password" : "Show password"}
+                  </span>
                 </Button>
               </div>
             </div>
@@ -103,5 +131,5 @@ export default function LoginPage() {
         </form>
       </Card>
     </div>
-  )
+  );
 }
