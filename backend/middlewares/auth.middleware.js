@@ -17,7 +17,8 @@ const protectedRoute = async (req, res, next) => {
     const user = jwt.verify(token, process.env.JWT_SECRET);
     req.user = {
       id: user.id,
-      emai: user.email,
+      email: user.email,
+      name: user.name,
     };
     next();
   } catch (err) {
