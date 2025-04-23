@@ -9,6 +9,7 @@ import CourseModule from "./pages/Modules/Module";
 import SignupPage from "./pages/SignUp/Sign_up";
 import InterviewForm from "./pages/InterviewForm/InterviewForm";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import InterviewExp from "./pages/InterviewExp/InterviewExp";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         <Route path="/createcourse" element={<Create_courses />} />
         <Route path="/interview" element={<Interview />} />
         <Route path="/modules/:courseId" element={<CourseModule />} />
-
+        <Route path="/interviewExp" element={<InterviewExp />} />
         {/* only logged in user can access these routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/addInterviewExp" element={<InterviewForm />} />
