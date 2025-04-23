@@ -12,4 +12,24 @@ const handleAddInterviewExperience = async (req, res) => {
   }
 };
 
-module.exports = { handleAddInterviewExperience };
+const handleGetInterviewExperiences = async (req, res) => {
+  try {
+    const experiences = await InterviewExp.find({});
+    res.status(200).json({
+      status: true,
+      msg: "Successfully fetched interview experiences",
+      experiences,
+    });
+  } catch (err) {
+    console.log("Error in getting interview experiences", err);
+    res.status(500).json({
+      status: false,
+      msg: "Error while getting interview experiences",
+    });
+  }
+};
+
+module.exports = {
+  handleAddInterviewExperience,
+  handleGetInterviewExperiences,
+};
