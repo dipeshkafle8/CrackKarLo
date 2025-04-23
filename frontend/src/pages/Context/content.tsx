@@ -112,7 +112,7 @@ const Content = () => {
             </div>
 
             {/*Our model*/}
-            <section className="w-full py-12 md:py-24 lg:py-32  bg-opacity-10 bg-gray-100 border-t border-b border-gray-200 rounded-2xl">
+            <section className="flex w-full py-12 md:py-24 lg:py-32  bg-opacity-10 bg-gray-100 border-t border-b border-gray-200 rounded-2xl algin-center justify-center  ">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -220,7 +220,7 @@ const Content = () => {
         </section>
 
         {/*Learning Paths*/}
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="flex justify-center algin-center w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -376,7 +376,7 @@ const Content = () => {
           </div>
         </section>
         
-        <section className='w-full py-12 md:py-24 lg:py-32 bg-gray-100 border-t border-b border-gray-200 rounded-2xl'>
+        <section className=' flex justify-center algin-center w-full py-12 md:py-24 lg:py-32 bg-gray-100 border-t border-b border-gray-200 rounded-2xl'>
           <div className='container px-4 md:px-6'>
           <div className='flex flex-col items-center justify-center space-y-4 text-center'>
           <div className='space-y-2'>
@@ -431,7 +431,7 @@ const Content = () => {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="flex justify-center algin-center w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -514,7 +514,7 @@ const Content = () => {
           </div>
         </section>
 
-        <section className='pt-25 bg-gray-100 border-t border-b border-gray-200 rounded-2xl'>
+        <section className='flex justify-center algin-center pt-25 bg-gray-100 border-t border-b border-gray-200 rounded-2xl'>
           <div className='container px-4 md:px-6'>
             <div className='flex flex-col items-center justify-center space-y-4 text-center'>
               <img src=""
