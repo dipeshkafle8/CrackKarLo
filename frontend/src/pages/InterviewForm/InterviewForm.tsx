@@ -31,6 +31,21 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon, PlusCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { axiosInstanceWithToken } from "@/lib/axios";
+
+interface InterviewFormData {
+  company: string;
+  role: string;
+  interviewType: string;
+  experience: string;
+  difficultyLevel: string;
+  questions: {
+    dsa: { name: string }[];
+    theory: { question: string }[];
+    queries: { question: string }[];
+  };
+  date?: Date; // Optional field for the interview date
+}
 
 export default function InterviewForm() {
   const [date, setDate] = useState<Date>();
@@ -47,6 +62,17 @@ export default function InterviewForm() {
     },
   });
 
+  const handleSubmitToBackEnd = async (data: InterviewFormData) => {
+    try {
+      let res = await axiosInstanceWithToken.post(
+        "/interview/addExperience",
+        data
+      );
+      console.log(res);
+    } catch (err) {
+      console.log("Error in adding new experience");
+    }
+  };
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -182,8 +208,7 @@ export default function InterviewForm() {
       date: date,
     };
 
-    console.log("Form submitted:", submissionData);
-    // Here you would typically send this data to your API
+    handleSubmitToBackEnd(submissionData);
   };
 
   return (

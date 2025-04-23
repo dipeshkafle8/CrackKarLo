@@ -19,6 +19,9 @@ const questionSchema = new mongoose.Schema(
     sampleOuput: {
       type: String,
     },
+    timer: {
+      type: Number,
+    },
     constraints: {
       type: String,
     },
