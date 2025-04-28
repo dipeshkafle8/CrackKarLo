@@ -4,7 +4,7 @@ import axios from "axios";
 
 import {
   Card,
-  CardContent,
+  // CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -27,38 +27,51 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { axiosInstanceWithToken } from "@/lib/axios";
 
+type Course = {
+  _id: string;
+  title: string;
+  description: string;
+  // add other fields if needed
+};
+
 export default function AllCourses() {
-  const [allcourses, setCourses] = useState([]);
+  const [allcourses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     title: "",
     description: "",
+    type: ""
   });
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+  
+  const receiveData = async () => {
+    try {
+      const res = await axios.get("/api/course/getCourses");
+      console.log("Fetched data:", res.data);
+
+      if (res.data && Array.isArray(res.data.Courses)) {
+        setCourses(res.data.Courses);
+      } else {
+        throw new Error("Invalid response format");
+      }
+    } catch (error) {
+      console.error("Error in fetching data:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   //to get courses from backend
   useEffect(() => {
-    const receiveData = async () => {
-      try {
-        const res = await axios.get("/api/course/getCourses");
-        console.log("Fetched data:", res.data);
-
-        if (res.data && Array.isArray(res.data.Courses)) {
-          setCourses(res.data.Courses);
-        } else {
-          throw new Error("Invalid response format");
-        }
-      } catch (err) {
-        console.error("Error in fetching data:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     receiveData();
   }, []);
 
@@ -66,7 +79,7 @@ export default function AllCourses() {
   useEffect(() => {
     const checkIsAdmin = async () => {
       try {
-        let res = await axiosInstanceWithToken.get("/user/checkIsAdmin");
+        const res = await axiosInstanceWithToken.get("/user/checkIsAdmin");
         console.log(res);
         setIsAdmin(true);
       } catch (err) {
@@ -76,12 +89,12 @@ export default function AllCourses() {
     checkIsAdmin();
   }, []);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.title || !form.description) {
       alert("Please fill in all the fields");
@@ -143,6 +156,18 @@ export default function AllCourses() {
                       className="col-span-3 w-3/4"
                     />
                   </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="type" className="text-right">
+                      Type
+                    </Label>
+                    <Input
+                      name="type"
+                      placeholder="Course Type"
+                      value={form.type}
+                      onChange={handleInputChange}
+                      className="col-span-3 w-3/4"
+                    />
+                  </div>
                 </div>
                 <SheetFooter>
                   <SheetClose asChild>
@@ -169,8 +194,8 @@ export default function AllCourses() {
             ) : (
               <div className="space-y-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {allcourses.map((course) => (
-                  <Card className="transition-transform hover:scale-120 shadow-lg shadow-gray-300">
-                    <CardHeader className="space-y-1" key={course._id}>
+                  <Card className="transition-transform hover:scale-120 shadow-lg shadow-gray-300" key={course._id}>
+                    <CardHeader className="space-y-1">
                       <CardTitle className="text-2xl font-bold">
                         {course.title}
                       </CardTitle>

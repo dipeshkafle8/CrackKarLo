@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 
 export default function SignupPage() {
+  const navigate=useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -26,16 +28,39 @@ export default function SignupPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-
     console.log("Form Data Submitted:", formData);
-    // Handle form submission logic here
+
+    try{
+      const response= await fetch('/api/user/register', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.firstName + formData.lastName, 
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
+
+      if(!response.ok){
+        const errorData = await response.json();
+      alert(errorData.message || "Registration failed!");
+      return;
+      }
+      alert("Registration successful!");
+      navigate('/login');
+    }catch(error){
+      alert("An error occurred. Please try again.");
+      console.error(error);      
+    }
   };
 
   return (
