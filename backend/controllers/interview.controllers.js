@@ -29,7 +29,31 @@ const handleGetInterviewExperiences = async (req, res) => {
   }
 };
 
+const handleGetParticularExperience = async (req, res) => {
+  try {
+    let { id } = req.params;
+    const Experience = await InterviewExp.findOne({ _id: id });
+    // if experience isn't present not return since it is not a valid id
+    if (!Experience) {
+      return res
+        .status(404)
+        .json({ status: false, msg: "Experience not found" });
+    }
+    res.status(200).json({
+      status: true,
+      msg: "Successfully receiving request",
+      Experience,
+    });
+  } catch (err) {
+    console.log("Error in getting particular experience", err);
+    res
+      .status(500)
+      .json({ status: false, msg: "Error in getting particular products" });
+  }
+};
+
 module.exports = {
   handleAddInterviewExperience,
   handleGetInterviewExperiences,
+  handleGetParticularExperience,
 };

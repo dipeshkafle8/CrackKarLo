@@ -10,7 +10,7 @@ import SignupPage from "./pages/SignUp/Sign_up";
 import InterviewForm from "./pages/InterviewForm/InterviewForm";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import InterviewExp from "./pages/InterviewExp/InterviewExp";
-
+import InterviewExpDetails from "./pages/InterviewExp/InterviewExpDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +23,7 @@ function App() {
         <Route path="/interview" element={<Interview />} />
         <Route path="/modules/:courseId" element={<CourseModule />} />
         <Route path="/interviewExp" element={<InterviewExp />} />
+        <Route path="/interview/:id" element={<InterviewExpDetails />} />
         {/* only logged in user can access these routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/addInterviewExp" element={<InterviewForm />} />
