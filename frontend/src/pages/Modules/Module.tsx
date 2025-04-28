@@ -12,31 +12,39 @@ import {
     SheetClose,
 } from "@/components/ui/sheet";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog"
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Airplay, ArrowBigRightDash } from "lucide-react";
+import { Label } from "@radix-ui/react-label";
 
 const CourseModule = () => {
     const { courseId } = useParams<{ courseId: string }>();
-    const [course, setCourse] = useState([]); // Store course details, including modules and their questions
+    const [course, setCourse] = useState([]);
 
-    // Fetch course modules and their questions
     const getCourse = async () => {
         try {
             const resp = await axios.get(`/api/course/getModules/${courseId}`);
             const modules = resp.data.Modules;
-
-            // Fetch questions for each module
             const modulesWithQuestions = await Promise.all(
                 modules.map(async (module) => {
                     try {
                         const questionResp = await axios.get(`/api/course/getQuestions/${module._id}`);
-                        return { ...module, questions: questionResp.data.Questions }; // Add questions to the module
+                        return { ...module, questions: questionResp.data.Questions };
                     } catch (error) {
                         console.error(`Error fetching questions for module ${module._id}:`, error);
-                        return { ...module, questions: [] }; // Default to an empty array if fetching fails
+                        return { ...module, questions: [] };
                     }
                 })
             );
@@ -109,25 +117,76 @@ const CourseModule = () => {
                                             </AccordionTrigger>
                                             <AccordionContent>
                                                 <div className="flex justify-end">
-                                                    <Button>Create Question</Button>
+                                                    <Dialog>
+                                                        <DialogTrigger>
+                                                        <Button>Create Question</Button>
+                                                        </DialogTrigger>
+                                                        <DialogContent>
+                                                            <DialogHeader>
+                                                                <DialogTitle>
+                                                                    Fill all the required Inputs :
+                                                                </DialogTitle>
+                                                                <DialogDescription className="flex gap-y-6 flex-col">
+                                                                    <div className="flex flex-col gap-2">
+                                                                        <Label className="font-semibold">Question Name:</Label>
+                                                                    <Textarea/>
+                                                                    </div>
+                                                                    <div className="flex flex-col gap-2">
+                                                                        <Label className="font-semibold">Description: </Label>
+                                                                        <Textarea/>
+                                                                    </div>
+                                                                    <div className="flex flex-col gap-2">
+                                                                        <Label className="font-semibold">Constraints:</Label>
+                                                                        <Textarea/>
+                                                                    </div>
+                                                                    <div className="flex flex-col gap-2">
+                                                                        <Label className="font-semibold">Time:</Label>
+                                                                        <Input type="time"/>
+                                                                    </div>
+                                                                    <div className="flex flex-col gap-2">
+                                                                        <Label className="font-semibold">Required Details</Label>
+                                                                        <Textarea/>
+                                                                    </div>
+                                                                </DialogDescription>
+                                                            </DialogHeader>
+                                                            <DialogFooter>
+                                                                <Button>Submit</Button>
+                                                                <Button>Reset</Button>
+                                                            </DialogFooter>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                   
                                                 </div>
                                                 {module.questions && module.questions.length > 0 ? (
                                                     <ul className="list-disc ml-4">
                                                         {module.questions.map((question, questionIndex) => (
-                                                            <div key={questionIndex} className="space-y-3 cursor-default">
-                                                                <div className="flex items-center align-center">
-                                                                    <ArrowBigRightDash />
-                                                                    <h1 className="text-muted-foreground pl-0.5 pb-0.5">{question.name}</h1>
+                                                            <Dialog>
+                                                                <div key={questionIndex} className="space-y-3 cursor-default">
+                                                                    <DialogTrigger>
+                                                                        <div className="flex items-center align-center">
+                                                                            <ArrowBigRightDash />
+                                                                            <h1 className="font-bold pl-0.5 pb-0.5 hover:text-blue-400">{question.name}</h1>
+                                                                        </div>
+                                                                    </DialogTrigger>
+                                                                    <DialogContent>
+                                                                        <DialogHeader>
+                                                                            <DialogTitle>
+                                                                                <div className="p-4">
+                                                                                    <p className="text-accent-foreground">{question.name}</p>
+                                                                                </div>
+                                                                            </DialogTitle>
+                                                                            <DialogDescription>
+                                                                                <div className="p-4 bg-muted rounded-md">
+                                                                                    <p className="text-accent-foreground">{question.description}</p>
+                                                                                </div>
+                                                                                <div className="p-4 bg-muted rounded-md mt-2">
+                                                                                    <p className="text-sidebar-accent-foreground">{question.constraints} </p>
+                                                                                </div>
+                                                                            </DialogDescription>
+                                                                        </DialogHeader>
+                                                                    </DialogContent>
                                                                 </div>
-                                                                <div className="p-4">
-                                                                    <h2 className="hover:underline font-semibold pb-2">Description :</h2>
-                                                                    <p className="text-accent-foreground">{question.description}</p>
-                                                                </div>
-                                                                <div className="p-4 bg-muted rounded-md">
-                                                                    <h2 className="hover:underline font-semibold pb-2">Constraints :</h2>
-                                                                    <p className="text-sidebar-accent-foreground">{question.constraints}</p>
-                                                                </div>
-                                                            </div>
+                                                            </Dialog>
                                                         ))}
                                                     </ul>
                                                 ) : (
