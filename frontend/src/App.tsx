@@ -10,20 +10,42 @@ import SignupPage from "./pages/SignUp/Sign_up";
 import InterviewForm from "./pages/InterviewForm/InterviewForm";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import InterviewExp from "./pages/InterviewExp/InterviewExp";
-import InterviewExpDetails from "./pages/InterviewExp/InterviewExpDetails";
+import Account from "./pages/Account/Account";
+import PublicRoute from "./ProtectedRoute/PublicRoute";
+import BookSessionPage from "./pages/VedioSession/BookSessionPage";
+import SchedulePage from "./pages/Interview/Schedule/Page";
+import SuccessPage from "./pages/Interview/Schedule/Success/SuccessPage";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <SignupPage />
+            </PublicRoute>
+          }
+        />
         <Route path="/course" element={<Courses />} />
         <Route path="/createcourse" element={<Create_courses />} />
         <Route path="/interview" element={<Interview />} />
         <Route path="/modules/:courseId" element={<CourseModule />} />
         <Route path="/interviewExp" element={<InterviewExp />} />
-        <Route path="/interview/:id" element={<InterviewExpDetails />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/booksession" element={<BookSessionPage/>}/>
+        <Route path="/praticesession" element={<SchedulePage/>}/>
+        <Route path="/success" element={<SuccessPage/>}/>
         {/* only logged in user can access these routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/addInterviewExp" element={<InterviewForm />} />

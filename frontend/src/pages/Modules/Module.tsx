@@ -28,10 +28,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Airplay, ArrowBigRightDash } from "lucide-react";
 import { Label } from "@radix-ui/react-label";
+import { axiosInstanceWithToken } from "@/lib/axios";
 
 const CourseModule = () => {
     const { courseId } = useParams<{ courseId: string }>();
     const [course, setCourse] = useState([]);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [from, setfrom] = useState({
+        name: "",
+        description: "",
+        course: courseId,
+    })
+    const [question, setQuestion] = useState({
+        question: "",
+        descrition: "",
+        constraints: "",
+        time: "",
+        requiredDetails: ""
+    })
 
     const getCourse = async () => {
         try {
@@ -56,46 +70,107 @@ const CourseModule = () => {
         }
     };
 
-    // Fetch course modules and questions on component mount
+    const handleInputChnage = (e) => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        setfrom((prevData) => ({ ...prevData, [name]: value }));
+    }
+
+
+    const handleCreateModule = async (e) => {
+        e.preventDefault();
+        if (!from.name || !from.description) {
+            alert("Please fill in all the fields");
+            return;
+        }
+        try {
+            const res = await axiosInstanceWithToken.post("/course/addModule", {
+                name: from.name,
+                description: from.description,
+                course: from.course  // This should be a valid MongoDB ObjectId
+            });
+            console.log("Module created: ", res.data);
+            alert("Module created successfully");
+            getCourse();
+            // Reset form
+            setfrom({
+                name: "",
+                description: "",
+                course: courseId
+            });
+        } catch (err) {
+            alert("Error in creating Module");
+            console.error("Error in creating module:", err);
+        }
+    }
+
+
     useEffect(() => {
         if (courseId) {
             getCourse();
         }
     }, [courseId]);
 
+    useEffect(() => {
+        const checkIsAdmin = async () => {
+            try {
+                const res = await axiosInstanceWithToken.get("/user/checkIsAdmin");
+                console.log(res);
+                setIsAdmin(true);
+            } catch (error) {
+                console.log("Error in checking admin", error);
+            }
+        }
+        checkIsAdmin();
+
+    }, [])
+
+
     return (
         <>
-            <div className="flex justify-end m-2">
-                <Sheet>
-                    <SheetTrigger>
-                        <Button>Create Module</Button>
-                    </SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle>Course Module</SheetTitle>
-                            <SheetDescription>Module Description</SheetDescription>
-                        </SheetHeader>
-                        <form>
-                            <div className="grid gap-4 py-4 ml-3 mr-2">
-                                <div className="grid gap-2">
-                                    <label>Module Name:</label>
-                                    <Input type="text" placeholder="Module Name" />
+            {isAdmin ? (
+                <div className="flex justify-end m-2">
+                    <Sheet>
+                        <SheetTrigger>
+                            <Button>Create Module</Button>
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>Course Module</SheetTitle>
+                                <SheetDescription>Module Description</SheetDescription>
+                            </SheetHeader>
+                            <form onSubmit={handleCreateModule}>
+                                <div className="grid gap-4 py-4 ml-3 mr-2">
+                                    <div className="grid gap-2">
+                                        <label>Module Name:</label>
+                                        <Input
+                                            name="name"
+                                            value={from.name}
+                                            onChange={handleInputChnage}
+                                            type="text"
+                                            placeholder="Module Name"
+                                        />
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <label>Module Description:</label>
+                                        <Textarea
+                                            name="description"
+                                            value={from.description}
+                                            onChange={handleInputChnage}
+                                            placeholder="Module Description"
+                                        />
+                                    </div>
+                                    <SheetFooter>
+                                        <SheetClose asChild>
+                                            <Button type="submit">Submit</Button>
+                                        </SheetClose>
+                                    </SheetFooter>
                                 </div>
-                                <div className="grid gap-2">
-                                    <label>Module Description:</label>
-                                    <Textarea placeholder="Module Description" />
-                                </div>
-                                <SheetFooter>
-                                    <Button type="submit">Submit</Button>
-                                    <SheetClose className="border-2 h-9 rounded-md hover:shadow-xl shadow-black">
-                                        Close
-                                    </SheetClose>
-                                </SheetFooter>
-                            </div>
-                        </form>
-                    </SheetContent>
-                </Sheet>
-            </div>
+                            </form>
+                        </SheetContent>
+                    </Sheet>
+                </div>
+            ) : null}
 
             <div className="w-5/6 mx-auto">
                 <Card>
@@ -116,47 +191,55 @@ const CourseModule = () => {
                                                 </div>
                                             </AccordionTrigger>
                                             <AccordionContent>
-                                                <div className="flex justify-end">
-                                                    <Dialog>
-                                                        <DialogTrigger>
-                                                        <Button>Create Question</Button>
-                                                        </DialogTrigger>
-                                                        <DialogContent>
-                                                            <DialogHeader>
-                                                                <DialogTitle>
-                                                                    Fill all the required Inputs :
-                                                                </DialogTitle>
-                                                                <DialogDescription className="flex gap-y-6 flex-col">
-                                                                    <div className="flex flex-col gap-2">
-                                                                        <Label className="font-semibold">Question Name:</Label>
-                                                                    <Textarea/>
-                                                                    </div>
-                                                                    <div className="flex flex-col gap-2">
-                                                                        <Label className="font-semibold">Description: </Label>
-                                                                        <Textarea/>
-                                                                    </div>
-                                                                    <div className="flex flex-col gap-2">
-                                                                        <Label className="font-semibold">Constraints:</Label>
-                                                                        <Textarea/>
-                                                                    </div>
-                                                                    <div className="flex flex-col gap-2">
-                                                                        <Label className="font-semibold">Time:</Label>
-                                                                        <Input type="time"/>
-                                                                    </div>
-                                                                    <div className="flex flex-col gap-2">
-                                                                        <Label className="font-semibold">Required Details</Label>
-                                                                        <Textarea/>
-                                                                    </div>
-                                                                </DialogDescription>
-                                                            </DialogHeader>
-                                                            <DialogFooter>
-                                                                <Button>Submit</Button>
-                                                                <Button>Reset</Button>
-                                                            </DialogFooter>
-                                                        </DialogContent>
-                                                    </Dialog>
-                                                   
-                                                </div>
+                                                {isAdmin ? (
+                                                    <div className="flex justify-end">
+                                                        <Dialog>
+                                                            <DialogTrigger>
+                                                                <Button>Create Question</Button>
+                                                            </DialogTrigger>
+                                                            <DialogContent>
+                                                                <DialogHeader>
+                                                                    <DialogTitle>
+                                                                        Fill all the required Inputs :
+                                                                    </DialogTitle>
+                                                                    <DialogDescription className="flex gap-y-6 flex-col">
+                                                                        <div className="flex flex-col gap-2">
+                                                                            <Label className="font-semibold">Question Name:</Label>
+                                                                            <Textarea
+                                                                            />
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-2">
+                                                                            <Label className="font-semibold">Description: </Label>
+                                                                            <Textarea
+                                                                            />
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-2">
+                                                                            <Label className="font-semibold">Constraints:</Label>
+                                                                            <Textarea
+                                                                            />
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-2">
+                                                                            <Label className="font-semibold">Time:</Label>
+                                                                            <Input
+                                                                                type="time"
+                                                                            />
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-2">
+                                                                            <Label className="font-semibold">Required Details</Label>
+                                                                            <Textarea
+                                                                            />
+                                                                        </div>
+                                                                    </DialogDescription>
+                                                                </DialogHeader>
+                                                                <DialogFooter>
+                                                                    <Button>Submit</Button>
+                                                                    <Button>Reset</Button>
+                                                                </DialogFooter>
+                                                            </DialogContent>
+                                                        </Dialog>
+
+                                                    </div>
+                                                ) : null}
                                                 {module.questions && module.questions.length > 0 ? (
                                                     <ul className="list-disc ml-4">
                                                         {module.questions.map((question, questionIndex) => (
