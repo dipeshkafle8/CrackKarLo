@@ -13,7 +13,7 @@ import InterviewExp from "./pages/InterviewExp/InterviewExp";
 import Account from "./pages/Account/Account";
 import PublicRoute from "./ProtectedRoute/PublicRoute";
 import BookSessionPage from "./pages/VedioSession/BookSessionPage";
-import SchedulePage from "./pages/Interview/Schedule/page";
+import SchedulePage from "./pages/Interview/Schedule/Page";
 import SuccessPage from "./pages/Interview/Schedule/Success/SuccessPage";
 
 function App() {
