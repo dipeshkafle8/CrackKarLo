@@ -20,8 +20,9 @@ import {Link} from 'react-router-dom';
 
 
 const Content = () => {
-    const [currentIndex, setCurrentIndex] = useState(1); // Start at 1 to account for cloned items
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     const boxes = [
         { id: 1, text: 'Best Networking', subtext: 'Suspendisse tempor mauris a sem elementum bibendum. Praesent facilisis massa non vestibulum.' },
@@ -32,40 +33,41 @@ const Content = () => {
         { id: 6, text: 'Best Teachers', subtext: 'Suspendisse tempor mauris a sem elementum bibendum. Praesent facilisis massa non vestibulum.' },
     ];
 
-    // Clone first and last items for seamless looping
+    // Clone items for smooth forward transition
     const clonedBoxes = [
-        boxes[boxes.length - 1], // Add last item at the beginning
         ...boxes,
+        ...boxes.slice(0, 3), // First 3 items for smooth transition
     ];
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setIsAnimating(true);
-            setCurrentIndex((prevIndex) => prevIndex + 1);
-        }, 3000); // Change every 3 seconds
+            if (!isTransitioning) {
+                handleNextClick();
+            }
+        }, 3000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [isTransitioning]);
 
     const handleTransitionEnd = () => {
+        setIsTransitioning(false);
         setIsAnimating(false);
 
-        // Reset index without animation when reaching clones
-        if (currentIndex === clonedBoxes.length - 1) {
-            setCurrentIndex(1); // Go back to the real first slide
-        } else if (currentIndex === 0) {
-            setCurrentIndex(clonedBoxes.length - 2); // Go back to the real last slide
+        // Reset to beginning without animation when reaching the end
+        if (currentIndex >= boxes.length) {
+            setIsAnimating(false);
+            setCurrentIndex(0);
         }
     };
 
-    const handlePrevClick = () => {
-        setIsAnimating(true);
-        setCurrentIndex((prevIndex) => prevIndex - 1);
-    };
-
     const handleNextClick = () => {
+        if (isTransitioning) return;
+        setIsTransitioning(true);
         setIsAnimating(true);
-        setCurrentIndex((prevIndex) => prevIndex + 1);
+        setCurrentIndex((prevIndex) => {
+            const nextIndex = prevIndex + 1;
+            return nextIndex >= boxes.length ? 0 : nextIndex;
+        });
     };
 
     return (
@@ -87,13 +89,12 @@ const Content = () => {
 
             {/* Carousel Section */}
             <div className='absolute bottom-[-90px] left-0 right-0 flex justify-center items-center'>
-                <button onClick={handlePrevClick} className="text-white bg-[#a70b0b] p-4 rounded-full mr-4 font-bold">←</button>
-                <div className='relative w-4/5 overflow-hidden'>
+                <div className='relative w-[1100px] overflow-hidden'>
                     <div
-                        className={`flex transition-transform duration-300 ease-in-out ${isAnimating ? '' : 'duration-0'} gap-3`}
+                        className={`flex transition-transform duration-500 ease-in-out ${isAnimating ? '' : 'duration-0'} gap-3`}
                         style={{
-                            transform: `translate3d(-${currentIndex * 350}px, 0, 0)`, // Adjusted for gap
-                            width: `${clonedBoxes.length * 350}px`, // Adjusted for gap
+                            transform: `translate3d(-${currentIndex * 350}px, 0, 0)`,
+                            width: `${clonedBoxes.length * 350}px`,
                         }}
                         onTransitionEnd={handleTransitionEnd}
                     >
@@ -108,7 +109,6 @@ const Content = () => {
                         ))}
                     </div>
                 </div>
-                <button onClick={handleNextClick} className="text-white bg-[#a70b0b] p-4 rounded-full ml-4 font-bold">→</button>
             </div>
 
             {/*Our model*/}
@@ -210,9 +210,11 @@ const Content = () => {
                   </ul>
                 </CardContent>
                 <CardFooter>
+                  <Link to="/booksession" className='w-full'>
                   <Button variant="outline" className="w-full">
                     Book a Session
                   </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </div>

@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { CircleUser } from 'lucide-react';
 
 const Navbar = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Replace this with your actual authentication logic if needed
+    setIsAuthenticated(!!localStorage.getItem("token"));
+  }, []);
 
   return (
     <div className="pt-3">
@@ -11,9 +18,9 @@ const Navbar = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="container mx-auto flex justify-between items-center">
+        <div className="container mx-auto flex flex-row justify-between items-center">
           <div className="text-white text-lg font-bold ml-4">Logo</div>
-          <div className="space-x-9 mr-2">
+          <div className="space-x-9 mr-2 flex flex-row items-center">
             <Link
               to="/"
               className="text-gray-300 hover:text-white transition duration-300 hover:underline"
@@ -29,7 +36,7 @@ const Navbar = () => {
                   Interview Exp
                 </Link>
                 <Link
-                  to="/courses"
+                  to="/course"
                   className="text-gray-300 hover:text-white transition duration-300 hover:underline"
                 >
                   Courses
@@ -37,15 +44,24 @@ const Navbar = () => {
                 <Link
                   to="/"
                   className="text-gray-300 hover:text-white transition duration-300 hover:underline"
-                >
+                > 
                   Sessions
                 </Link>
-                <Link
-                  to="/login"
-                  className="text-gray-300 hover:text-white transition duration-300 hover:underline"
-                >
-                  Login
-                </Link>
+                {isAuthenticated ? (
+                  <Link
+                    to="/account"
+                    className="text-gray-300 hover:text-white transition duration-300 hover:underline flex items-center"
+                  >
+                    <CircleUser size={27} />
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="text-gray-300 hover:text-white transition duration-300 hover:underline"
+                  >
+                    Login
+                  </Link>
+                )}
               </>
             )}
           </div>

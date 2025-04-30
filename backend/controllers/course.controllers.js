@@ -70,6 +70,7 @@ const handleCreateCourse = async (req, res) => {
 
 // For creating a module for particular Course
 const handleCreateModule = async (req, res) => {
+  console.log("In the Controller");
   try {
     const { course } = req.body;
     const moduleDetails = req.body;

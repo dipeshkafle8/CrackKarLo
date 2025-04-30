@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react"; // For the checkmark icon
+import { Link } from "react-router-dom";
 
 const Practice = () => {
     return (
@@ -98,9 +99,11 @@ const Practice = () => {
                 </div>
             </div>
         </CardContent>
+        <Link to="/praticesession">
         <CardFooter>
             <Button className="w-full sm:w-auto">Schedule Practice Session</Button>
         </CardFooter>
+        </Link>
     </Card>
     );
 }

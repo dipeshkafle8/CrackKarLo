@@ -101,7 +101,7 @@ export default function AllCourses() {
       return;
     }
     try {
-      const res = await axios.post("/api/course/addCourse", form);
+      const res = await axiosInstanceWithToken.post("/course/addCourse", form);
       console.log("Course created:", res.data);
       alert("Course created successfully");
       receiveData();
@@ -199,11 +199,14 @@ export default function AllCourses() {
                       <CardTitle className="text-2xl font-bold">
                         {course.title}
                       </CardTitle>
-                      <CardDescription>{course.description}</CardDescription>
+                      <CardDescription className="line-clamp-3">
+                        {course.description}
+                      </CardDescription>
                     </CardHeader>
-                    <CardFooter className="space-y-2">
+                    <CardFooter className="mt-auto">
                       <Button
                         onClick={() => navigate(`/modules/${course._id}`)}
+                        className="w-full"
                       >
                         View Modules
                       </Button>
