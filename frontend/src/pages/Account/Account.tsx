@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -18,6 +17,8 @@ import {
     DialogFooter
 } from "@/components/ui/dialog";
 
+import { axiosInstanceWithToken } from "@/lib/axios";
+
 const Account = () => {
     const [profile, setProfile] = useState({
         name: "",
@@ -35,9 +36,11 @@ const Account = () => {
     useEffect(() => {
         const fetchAccount = async () => {
             try {
-                const response = await axios.get('/api/account', { withCredentials: true });
-                setProfile(response.data);
-                setForm(response.data);
+                console.log("Fetching account data...");
+                const response = await axiosInstanceWithToken.get('/user/account');
+                console.log("Account Data:", response.data.user);
+                setProfile(response.data.user);
+                setForm(response.data.user);
             } catch (error) {
                 console.error(error);
             }
@@ -45,7 +48,7 @@ const Account = () => {
         fetchAccount();
     }, []);
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type, files } = e.target;
         if (type === 'file') {
             setImageFile(files[0]); // Store the selected image file
@@ -61,7 +64,7 @@ const Account = () => {
         
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FocusEvent) => {
         e.preventDefault();
         // if (imageFile) {
         //     await handleImageUpload();

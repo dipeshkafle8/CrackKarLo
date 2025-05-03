@@ -41,8 +41,9 @@ export default function LoginPage() {
       setTimeout(() => {
         navigate("/");
       }, 800);
-    } catch (err) {
+    } catch (error) {
       console.log("Error in logging in");
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +52,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    let formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget);
     const user: UserLoginDetails = {
       email: (formData.get("email") as "") ?? "",
       password: (formData.get("password") as "") ?? "",

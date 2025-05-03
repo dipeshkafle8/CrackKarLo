@@ -5,6 +5,7 @@ import Overview from "./Overview";
 import Questions from "./Question";
 import Practice from "./Pratice";
 import Checklist from "./Checklist"
+import NavigateToHome from "@/Home/Navigate";
 
 
 const Interview = () => {
@@ -19,6 +20,10 @@ const Interview = () => {
     }
 
     return (
+        <>
+        <div className="absolute left-2 top-2">
+            <NavigateToHome/>
+        </div>
         <div className="container mx-auto py-8 px-4 max-w-6xl">
             <div className="felx flex-col gap-6">
                 <div className="space-y-2">
@@ -56,6 +61,7 @@ const Interview = () => {
                 </Tabs>
             </div>
         </div>
+        </>
     )
 }
 

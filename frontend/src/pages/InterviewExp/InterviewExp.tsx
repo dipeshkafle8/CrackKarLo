@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Calendar, Briefcase, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
+import NavigateToHome from "../../Home/Navigate";
+
 //for defining question type
 export interface QuestionsType {
   dsa: { name: string }[];
@@ -77,7 +79,13 @@ const InterviewExp = () => {
   }
   return (
     <>
+    <div className="flex justify-end mr-3 mt-2">
+      <NavigateToHome/>
+    </div>
       <div className="container mx-auto py-8">
+        <div>
+
+        </div>
         <h1 className="text-3xl font-bold mb-8">Interview Experiences</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Calendar, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
+import NavigateToHome from "../../Home/Navigate";
 
 const InterviewExpDetails = () => {
   const [interview, setInterview] = useState<ExperienceType | null>(null);
@@ -17,10 +18,10 @@ const InterviewExpDetails = () => {
   useEffect(() => {
     const fetchExperience = async () => {
       try {
-        let res = await axiosInstance.get(`/interview/getExperience/${id}`);
+        const res = await axiosInstance.get(`/interview/getExperience/${id}`);
         setInterview(res.data.Experience);
       } catch (err) {
-        console.log("Error in fetching particular interview experience");
+        console.log("Error in fetching particular interview experience",err);
       } finally {
         setLoading(false);
       }
@@ -62,6 +63,12 @@ const InterviewExpDetails = () => {
   console.log(interview);
 
   return (
+    <>
+    <div className="relative">
+    <div className="absolute flex justify-end items-end top-2 right-3">
+      <NavigateToHome/>
+    </div>
+    </div>
     <div className="container mx-auto py-8">
       <div className="mb-6">
         <Link to="/interviewExp">
@@ -178,6 +185,7 @@ const InterviewExpDetails = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 

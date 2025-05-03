@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     profilePic: { type: String, default: "" },
     role: { type: String, default: "student" },
+    username:{ type: String, default: "" },
     //to track how many questions are complete in particular module
     moduleProgress: [
       {
@@ -31,6 +32,7 @@ const userSchema = new mongoose.Schema(
     ],
   },
   { timestamps: true } //by default add createdAt and updatedAt fields in the schema
+  
 );
 
 const User = mongoose.model("User", userSchema);

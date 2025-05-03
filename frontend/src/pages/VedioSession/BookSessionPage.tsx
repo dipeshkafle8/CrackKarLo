@@ -1,5 +1,6 @@
 import BookingForm from "./BookSession"
 import type { Metadata } from "next"
+import NavigateToHome from "@/Home/Navigate"
 
 export const metadata: Metadata = {
   title: "Book a Session",
@@ -8,6 +9,10 @@ export const metadata: Metadata = {
 
 export default function BookSessionPage() {
   return (
+    <>
+    <div className="absolute left-2 top-3">
+      <NavigateToHome/>
+    </div>
     <div className="flex justify-center items-center">
     <div className="container max-w-5xl py-10 min-h-screen">
       <div className="grid gap-8 md:grid-cols-2 w-full">
@@ -34,5 +39,6 @@ export default function BookSessionPage() {
       </div>
     </div>
     </div>
+    </>
   )
 }

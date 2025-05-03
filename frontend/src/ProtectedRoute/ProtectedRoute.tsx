@@ -13,7 +13,8 @@ const ProtectedRoute = () => {
         console.log(res.data);
         setIsAuthenticated(true);
       } catch (err) {
-        console.log("Error in Authentication");
+        localStorage.removeItem("token");
+        console.log("Error in Authentication",err);
       } finally {
         setIsLoading(false);
       }

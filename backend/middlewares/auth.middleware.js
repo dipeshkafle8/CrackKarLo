@@ -16,6 +16,7 @@ const protectedRoute = async (req, res, next) => {
     }
     try {
       const user = jwt.verify(token, process.env.JWT_SECRET);
+      // console.log("Decoded User:", user);
       req.user = {
         id: user.id,
         email: user.email,

@@ -15,6 +15,7 @@ import PublicRoute from "./ProtectedRoute/PublicRoute";
 import BookSessionPage from "./pages/VedioSession/BookSessionPage";
 import SchedulePage from "./pages/Interview/Schedule/Page";
 import SuccessPage from "./pages/Interview/Schedule/Success/SuccessPage";
+import InterviewExpDetails from "./pages/InterviewExp/InterviewExpDetails";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/interview" element={<Interview />} />
         <Route path="/modules/:courseId" element={<CourseModule />} />
         <Route path="/interviewExp" element={<InterviewExp />} />
+        <Route path="interview/:id" element={<InterviewExpDetails/>}/>
         <Route path="/account" element={<Account />} />
         <Route path="/booksession" element={<BookSessionPage/>}/>
         <Route path="/praticesession" element={<SchedulePage/>}/>

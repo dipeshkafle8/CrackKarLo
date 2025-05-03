@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import {
@@ -22,6 +22,7 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog"
 
+import NavigateToHome from "@/Home/Navigate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,10 +30,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Airplay, ArrowBigRightDash } from "lucide-react";
 import { Label } from "@radix-ui/react-label";
 import { axiosInstanceWithToken } from "@/lib/axios";
+import { DialogClose } from "@radix-ui/react-dialog";
+
+interface Question {
+    _id: string;
+    name: string;
+    description: string;
+    constraints: string;
+    time: string;
+    requiredDetails: string;
+}
+
+interface Module {
+    _id: string;
+    name: string;
+    description: string;
+    questions: Question[]; // Array of questions
+}
 
 const CourseModule = () => {
     const { courseId } = useParams<{ courseId: string }>();
-    const [course, setCourse] = useState([]);
+    const [course, setCourse] = useState<Module[]>([]);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [from, setfrom] = useState({
         name: "",
@@ -44,13 +62,15 @@ const CourseModule = () => {
         description: "",
         constraints: "",
         time: "",
-        requiredDetails: ""
+        requiredDetails: "",
+        module: "",
     })
 
-    const getCourse = async () => {
+
+    const getCourse = useCallback(async () => {
         try {
             const resp = await axios.get(`/api/course/getModules/${courseId}`);
-            const modules = resp.data.Modules;
+            const modules: Module[]=resp.data.Modules;
             const modulesWithQuestions = await Promise.all(
                 modules.map(async (module) => {
                     try {
@@ -68,16 +88,16 @@ const CourseModule = () => {
         } catch (error) {
             console.error("Error fetching course:", error);
         }
-    };
+    },[courseId]);
 
-    const handleInputChnage = (e) => {
+    const handleInputChnage = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault();
         const { name, value } = e.target;
         setfrom((prevData) => ({ ...prevData, [name]: value }));
     }
 
 
-    const handleCreateModule = async (e) => {
+    const handleCreateModule = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!from.name || !from.description) {
             alert("Please fill in all the fields");
@@ -104,14 +124,15 @@ const CourseModule = () => {
         }
     }
 
-    const handeleInputChangeQuestion = (e) => {
+    const handeleInputChangeQuestion = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault();
         const { name, value } = e.target;
         setQuestion((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleCreateQuestion = async (e) => {
+    const handleCreateQuestion = async (e: React.FormEvent , moduleId: string) => {
         e.preventDefault();
+        console.log("Button hit");
         if (!question.question || !question.description || !question.constraints || !question.time || !question.requiredDetails) {
             alert("Please fill in all the fields");
             return;
@@ -123,7 +144,7 @@ const CourseModule = () => {
                 constraints: question.constraints,
                 time: question.time,
                 requiredDetails: question.requiredDetails,
-                moduleId: courseId // This should be a valid MongoDB ObjectId
+                module: moduleId, 
             });
             console.log("Question created: ", res.data);
             alert("Question created successfully");
@@ -134,7 +155,8 @@ const CourseModule = () => {
                 description: "",
                 constraints: "",
                 time: "",
-                requiredDetails: ""
+                requiredDetails: "",
+                module: "",
             });
         } catch (err) {
             alert("Error in creating Question");
@@ -149,7 +171,7 @@ const CourseModule = () => {
         if (courseId) {
             getCourse();
         }
-    }, [courseId]);
+    }, [courseId, getCourse]);
 
     useEffect(() => {
         const checkIsAdmin = async () => {
@@ -168,6 +190,9 @@ const CourseModule = () => {
 
     return (
         <>
+        <div className="absolute left-2">
+            <NavigateToHome/>
+        </div>
             {isAdmin ? (
                 <div className="flex justify-end m-2">
                     <Sheet>
@@ -237,8 +262,8 @@ const CourseModule = () => {
                                                             <DialogTrigger>
                                                                 <Button>Create Question</Button>
                                                             </DialogTrigger>
-                                                            <form onSubmit={handleCreateQuestion}>
                                                             <DialogContent>
+                                                            <form onSubmit={(e)=>handleCreateQuestion(e, module._id)}>
                                                                 <DialogHeader>
                                                                     <DialogTitle>
                                                                         Fill all the required Inputs :
@@ -283,7 +308,7 @@ const CourseModule = () => {
                                                                                 max={60}
                                                                             />
                                                                         </div>
-                                                                        <div className="flex flex-col gap-2">
+                                                                        <div className="flex flex-col gap-2 mb-2">
                                                                             <Label className="font-semibold">Required Details</Label>
                                                                             <Textarea
                                                                                 name="requiredDetails"
@@ -295,10 +320,12 @@ const CourseModule = () => {
                                                                     </DialogDescription>
                                                                 </DialogHeader>
                                                                 <DialogFooter>
-                                                                    <Button type="submit">Submit</Button>
+                                                                    <DialogClose asChild>
+                                                                    <Button type="submit"  variant="secondary" >Submit</Button>
+                                                                    </DialogClose>
                                                                 </DialogFooter>
+                                                                </form>
                                                             </DialogContent>
-                                                            </form>
                                                         </Dialog>
 
                                                     </div>
