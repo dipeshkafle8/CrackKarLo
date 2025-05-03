@@ -34,7 +34,7 @@ const handleUserLogin = async (req, res) => {
     }
     const isPassVerfied = await bcrypt.compare(password, user.password);
     if (!isPassVerfied) {
-      res.status(401).json({ status: false, msg: "Password is incorrect" });
+     return res.status(401).json({ status: false, msg: "Password is incorrect" });
     }
     const jwtToken = jwt.sign(
       { id: user._id, name: user.name, email: user.email },

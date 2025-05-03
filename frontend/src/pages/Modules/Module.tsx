@@ -41,7 +41,7 @@ const CourseModule = () => {
     })
     const [question, setQuestion] = useState({
         question: "",
-        descrition: "",
+        description: "",
         constraints: "",
         time: "",
         requiredDetails: ""
@@ -103,6 +103,46 @@ const CourseModule = () => {
             console.error("Error in creating module:", err);
         }
     }
+
+    const handeleInputChangeQuestion = (e) => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        setQuestion((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    const handleCreateQuestion = async (e) => {
+        e.preventDefault();
+        if (!question.question || !question.description || !question.constraints || !question.time || !question.requiredDetails) {
+            alert("Please fill in all the fields");
+            return;
+        }
+        try {
+            const res = await axiosInstanceWithToken.post("/course/addQuestion", {
+                name: question.question,
+                description: question.description,
+                constraints: question.constraints,
+                time: question.time,
+                requiredDetails: question.requiredDetails,
+                moduleId: courseId // This should be a valid MongoDB ObjectId
+            });
+            console.log("Question created: ", res.data);
+            alert("Question created successfully");
+            getCourse();
+            // Reset form
+            setQuestion({
+                question: "",
+                description: "",
+                constraints: "",
+                time: "",
+                requiredDetails: ""
+            });
+        } catch (err) {
+            alert("Error in creating Question");
+            console.error("Error in creating question:", err);
+        }
+
+
+    };
 
 
     useEffect(() => {
@@ -197,6 +237,7 @@ const CourseModule = () => {
                                                             <DialogTrigger>
                                                                 <Button>Create Question</Button>
                                                             </DialogTrigger>
+                                                            <form onSubmit={handleCreateQuestion}>
                                                             <DialogContent>
                                                                 <DialogHeader>
                                                                     <DialogTitle>
@@ -206,36 +247,58 @@ const CourseModule = () => {
                                                                         <div className="flex flex-col gap-2">
                                                                             <Label className="font-semibold">Question Name:</Label>
                                                                             <Textarea
+                                                                                name="question"
+                                                                                value={question.question}
+                                                                                onChange={handeleInputChangeQuestion}
+                                                                                placeholder="Question Name"
                                                                             />
                                                                         </div>
                                                                         <div className="flex flex-col gap-2">
                                                                             <Label className="font-semibold">Description: </Label>
                                                                             <Textarea
+                                                                                name="description"
+                                                                                value={question.description}
+                                                                                onChange={handeleInputChangeQuestion}
+                                                                                placeholder="Description"
                                                                             />
                                                                         </div>
                                                                         <div className="flex flex-col gap-2">
                                                                             <Label className="font-semibold">Constraints:</Label>
                                                                             <Textarea
+                                                                                name="constraints"
+                                                                                value={question.constraints}
+                                                                                onChange={handeleInputChangeQuestion}
+                                                                                placeholder="Constraints"
                                                                             />
                                                                         </div>
                                                                         <div className="flex flex-col gap-2">
                                                                             <Label className="font-semibold">Time:</Label>
                                                                             <Input
-                                                                                type="time"
+                                                                                type="number"
+                                                                                placeholder="Time in minutes"
+                                                                                name="time"
+                                                                                value={question.time}
+                                                                                onChange={handeleInputChangeQuestion}
+                                                                                min={1}
+                                                                                max={60}
                                                                             />
                                                                         </div>
                                                                         <div className="flex flex-col gap-2">
                                                                             <Label className="font-semibold">Required Details</Label>
                                                                             <Textarea
+                                                                                name="requiredDetails"
+                                                                                value={question.requiredDetails}
+                                                                                onChange={handeleInputChangeQuestion}
+                                                                                placeholder="Required Details"
                                                                             />
                                                                         </div>
                                                                     </DialogDescription>
                                                                 </DialogHeader>
                                                                 <DialogFooter>
-                                                                    <Button>Submit</Button>
-                                                                    <Button>Reset</Button>
+                                                                    <Button type="submit">Submit</Button>
                                                                 </DialogFooter>
                                                             </DialogContent>
+                                                            </form>
                                                         </Dialog>
 
                                                     </div>

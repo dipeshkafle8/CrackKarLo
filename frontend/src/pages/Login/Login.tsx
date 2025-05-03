@@ -1,6 +1,6 @@
 import type React from "react";
 import { axiosInstance } from "@/lib/axios";
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
@@ -16,11 +16,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AuthContext, AuthContextType, useAuth } from "@/context/AuthContext";
+import {  AuthContextType, useAuth } from "@/context/AuthContext";
 
 interface UserLoginDetails {
-  email: String;
-  password: String;
+  email: "";
+  password: "";
 }
 
 export default function LoginPage() {
@@ -32,8 +32,8 @@ export default function LoginPage() {
 
   const sendUserDetailsToBackend = async (user: UserLoginDetails) => {
     try {
-      let res = await axiosInstance.post("user/login", user);
-      let token = JSON.stringify(res.data.jwtToken);
+      const res = await axiosInstance.post("user/login", user);
+      const token = JSON.stringify(res.data.jwtToken);
 
       localStorage.setItem("token", token);
       setUser(res.data.user);
@@ -53,8 +53,8 @@ export default function LoginPage() {
     setIsLoading(true);
     let formData = new FormData(e.currentTarget);
     const user: UserLoginDetails = {
-      email: (formData.get("email") as String) ?? "",
-      password: (formData.get("password") as String) ?? "",
+      email: (formData.get("email") as "") ?? "",
+      password: (formData.get("password") as "") ?? "",
     };
     sendUserDetailsToBackend(user);
     e.currentTarget.reset();
