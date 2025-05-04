@@ -114,9 +114,9 @@ const handleCreateQuestion = async (req, res) => {
       }
     );
     // update the total question in course for that particular module
-    await Course.findByIdAndUpdate(updatedModule.course, {
-      $inc: { totalQuestions: 1 },
-    });
+    // await Course.findByIdAndUpdate(updatedModule.course, {
+    //   $inc: { totalQuestions: 1 },
+    // });
 
     //save the instance to the database
     newQuestion.save();

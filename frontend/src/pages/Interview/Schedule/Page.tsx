@@ -5,6 +5,7 @@ import { format } from "date-fns"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import NavigateToHome from "@/Home/Navigate"
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -57,6 +58,10 @@ export default function SchedulePage() {
   }
 
   return (
+    <>
+    <div className="absolute left-2 top-1">
+      <NavigateToHome/>
+    </div>
     <div className="container mx-auto py-10">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">Schedule Practice Interview</h1>
@@ -237,5 +242,6 @@ export default function SchedulePage() {
         </Card>
       </div>
     </div>
+    </>
   )
 }

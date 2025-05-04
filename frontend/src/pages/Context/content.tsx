@@ -283,9 +283,11 @@ const Content = () => {
                       </div>
                     </div>
                   </CardContent>
+                  <Link to={'/course'}>
                   <CardFooter>
                     <Button className="w-full">Start Frontend Path</Button>
                   </CardFooter>
+                  </Link>
                 </Card>
               </TabsContent>
               <TabsContent value="backend" className="mt-6">
@@ -369,9 +371,11 @@ const Content = () => {
                       </div>
                     </div>
                   </CardContent>
+                  <Link to={'/course'}>
                   <CardFooter>
                     <Button className="w-full">Start Full Stack Path</Button>
                   </CardFooter>
+                  </Link>
                 </Card>
               </TabsContent>
             </Tabs>
@@ -405,9 +409,11 @@ const Content = () => {
                 experienced interviewers and improve your performance.
                 </p>
               </CardContent>
+              <Link to={'/praticesession'}>
               <CardFooter>
                 <Button className="w-full" variant="outline">Start Mock Interview</Button>
               </CardFooter>
+              </Link>
             </Card>
             <Card>
               <CardHeader>
@@ -425,15 +431,17 @@ const Content = () => {
                 detailed solutions and explanations for each challenge.
                 </p>
                 </CardContent>
+                <Link to={'/course'}>
                 <CardFooter>
                   <Button className="w-full" variant="outline">Start Coding Challenges</Button>
                 </CardFooter>
+                </Link>
             </Card>
           </div>
           </div>
         </section>
 
-        <section className="flex justify-center algin-center w-full py-12 md:py-24 lg:py-32">
+        {/* <section className="flex justify-center algin-center w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -514,7 +522,7 @@ const Content = () => {
               </Card>
             </div>
           </div>
-        </section>
+        </section> */}
 
         <section className='flex justify-center algin-center pt-25 bg-gray-100 border-t border-b border-gray-200 rounded-2xl'>
           <div className='container px-4 md:px-6'>

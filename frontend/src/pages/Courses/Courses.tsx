@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
+import NavigateToHome from "@/Home/Navigate";
 
 import {
   Card,
@@ -116,6 +117,9 @@ export default function AllCourses() {
 
   return (
     <>
+    <div className="absolute left-3">
+      <NavigateToHome/>
+    </div>
       {isAdmin ? (
         <div className="relative flex justify-end mr-2 mt-2 ">
           <Sheet>

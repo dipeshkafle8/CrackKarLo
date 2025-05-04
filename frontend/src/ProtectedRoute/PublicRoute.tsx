@@ -12,6 +12,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
         await axiosInstanceWithToken.get("/user/checkUserSession");
         setIsAuthenticated(true);
       } catch {
+        localStorage.removeItem("token");
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);

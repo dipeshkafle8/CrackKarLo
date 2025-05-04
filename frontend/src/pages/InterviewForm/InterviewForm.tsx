@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ import { format } from "date-fns";
 import { CalendarIcon, PlusCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { axiosInstanceWithToken } from "@/lib/axios";
+import NavigateToHome from "@/Home/Navigate";
 
 interface InterviewFormData {
   company: string;
@@ -48,6 +50,7 @@ interface InterviewFormData {
 }
 
 export default function InterviewForm() {
+  const navigate = useNavigate();
   const [date, setDate] = useState<Date>();
   const [formData, setFormData] = useState({
     company: "",
@@ -64,13 +67,15 @@ export default function InterviewForm() {
 
   const handleSubmitToBackEnd = async (data: InterviewFormData) => {
     try {
-      let res = await axiosInstanceWithToken.post(
+      const res = await axiosInstanceWithToken.post(
         "/interview/addExperience",
         data
       );
+      alert("Your Data added sucessfully!");
+      navigate('/');
       console.log(res);
     } catch (err) {
-      console.log("Error in adding new experience");
+      console.log("Error in adding new experience",err);
     }
   };
   const handleInputChange = (
@@ -212,6 +217,10 @@ export default function InterviewForm() {
   };
 
   return (
+    <>
+    <div className="relative ml-2 mb-[-15px] top-1">
+      <NavigateToHome/>
+    </div>
     <div className="my-8">
       <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto">
         <Card>
@@ -454,5 +463,6 @@ export default function InterviewForm() {
         </Card>
       </form>
     </div>
+    </>
   );
 }

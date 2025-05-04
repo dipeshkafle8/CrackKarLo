@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -84,6 +85,7 @@ export default function BookingForm() {
   }
 
   return (
+    <>
     <div className="rounded-lg border p-6 shadow-sm">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -292,5 +294,6 @@ export default function BookingForm() {
         </form>
       </Form>
     </div>
+    </>
   )
 }
